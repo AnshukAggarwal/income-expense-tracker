@@ -17,7 +17,7 @@ const App= ()=>{
       setTranascations(result)
     }
     fetchData();
-  }, [description,amount])
+  }, [description,amount,transactions])
 
   const handleDescription= (e)=>{
     setDescription(e.target.value)
