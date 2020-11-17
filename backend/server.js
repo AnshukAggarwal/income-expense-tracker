@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const cors = require('cors')
 const morgan = require('morgan')
 const transactionsRouter = require('./Routes/transactions.routes')
+const path = require('path');
 
 require('dotenv').config()
 
@@ -25,9 +26,15 @@ connection.once('open', ()=>{
 
 app.use('/', transactionsRouter)
 
-app.use(express.static(path.join(__dirname, '../build')))
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../build'))
-})
+//serve statis assets if we are in production 
+
+if (process.env.NODE_ENV === 'production'){
+    //set a static folder
+    app.use(express.static('../build'))
+
+    app.get('*', (req,res)=>{
+        res.sendFile(path.resolve(__dirname, '../build', 'index.html'));
+    })
+}
 
 app.listen(port,()=> console.log(`Server is running at Port:${port}`))
